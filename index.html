@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qizlar Kiyim Do'koni</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #ff4081;
+            --secondary: #f50057;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+        }
+        
+        .cart-icon {
+            position: relative;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--warning);
+            color: var(--dark);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Categories */
+        .categories {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            border: none;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .product-badge.rental {
+            background: var(--warning);
+            color: var(--dark);
+        }
+        
+        .product-badge.sold-out {
+            background: #dc3545;
+        }
+        
+        /* Swiper */
+        .swiper {
+            width: 100%;
+            height: 200px;
+        }
+        
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .product-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .product-size {
+            background: #e9ecef;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .product-price.per-hour {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .product-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #e9ecef;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s;
+            z-index: 1001;
+            overflow-y: auto;
+        }
+        
+        .cart-sidebar.active {
+            right: 0;
+        }
+        
+        .cart-header {
+            padding: 20px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-header h3 {
+            margin: 0;
+        }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .cart-items {
+            padding: 20px;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .cart-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .cart-item-remove {
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .cart-summary {
+            padding: 20px;
+            border-top: 2px solid #eee;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-total {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* Checkout Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1002;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .promo-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        /* Search */
+        .search-container {
+            margin: 20px 0;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tshirt"></i>
+                    <span>Qizlar Kiyim Do'koni</span>
+                </div>
+                <div class="cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search -->
+    <div class="container">
+        <div class="search-container">
+            <input type="text" 
+                   class="search-input" 
+                   placeholder="Mahsulot ID yoki nomi bo'yicha qidirish..."
+                   oninput="searchProducts(this.value)">
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="container">
+        <div class="categories">
+            <button class="category-btn active" onclick="filterProducts('all')">Barchasi</button>
+            <button class="category-btn" onclick="filterProducts('sale')">Sotiladigan</button>
+            <button class="category-btn" onclick="filterProducts('rental')">Ijaraga beriladigan</button>
+            <button class="category-btn" onclick="filterProducts('new')">Yangi</button>
+            <button class="category-btn" onclick="filterProducts('popular')">Ommabop</button>
+        </div>
+    </div>
+
+    <!-- Products -->
+    <div class="container">
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here -->
+        </div>
+        
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-tshirt"></i>
+            <h3>Mahsulotlar topilmadi</h3>
+            <p>Hozircha bu bo'limda mahsulotlar mavjud emas</p>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Savat (<span id="cartItemCount">0</span>)</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be loaded here -->
+        </div>
+        
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>Jami:</span>
+                <span id="cartSubtotal">0</span> so'm
+            </div>
+            <div class="summary-row">
+                <span>Chegirma:</span>
+                <span id="cartDiscount">0</span> so'm
+            </div>
+            <div class="summary-row summary-total">
+                <span>To'lov:</span>
+                <span id="cartTotal">0</span> so'm
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="showCheckout()">
+                Buyurtma berish
+            </button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buyurtma ma'lumotlari</h3>
+            </div>
+            <div class="modal-body">
+                <form id="checkoutForm" onsubmit="submitOrder(event)">
+                    <div class="form-group">
+                        <label class="form-label">Ismingiz *</label>
+                        <input type="text" class="form-control" id="customerName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Telefon raqamingiz *</label>
+                        <input type="tel" class="form-control" id="customerPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Lokatsiya/Manzil *</label>
+                        <textarea class="form-control" id="customerLocation" rows="3" required></textarea>
+                        <small>Yetkazib berish manzilingizni to'liq yozing</small>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="orderType" value="delivery" checked>
+                            <span>Yetkazib berish</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="orderType" value="reservation">
+                            <span>Band qilish</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="orderType" value="pickup">
+                            <span>O'zim olib ketaman</span>
+                        </label>
+                    </div>
+                    
+                    <div class="promo-section">
+                        <label class="form-label">Promokod (agar mavjud bo'lsa)</label>
+                        <input type="text" class="form-control" id="promoCode" placeholder="Promokodni kiriting">
+                        <button type="button" class="btn btn-secondary" style="margin-top: 10px;" onclick="applyPromoCode()">
+                            Qo'llash
+                        </button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Qo'shimcha izoh</label>
+                        <textarea class="form-control" id="orderNotes" rows="2"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="button" class="btn btn-secondary" onclick="closeCheckout()">Bekor qilish</button>
+                        <button type="submit" class="btn btn-primary">Buyurtma berish</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalProductTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="swiper" id="productSwiper">
+                    <div class="swiper-wrapper" id="productImages">
+                        <!-- Images will be loaded here -->
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                
+                <div style="padding: 20px 0;">
+                    <p id="modalProductDescription"></p>
+                    <div class="product-meta" style="margin: 15px 0;">
+                        <span class="product-size" id="modalProductSize"></span>
+                        <div>
+                            <div class="product-price" id="modalProductPrice"></div>
+                            <div class="product-price per-hour" id="modalRentalPrice" style="display: none;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-quantity">
+                        <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                        <input type="number" class="quantity-input" id="modalQuantity" value="1" min="1">
+                        <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                        <span style="margin-left: auto;" id="modalAvailable"></span>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn btn-primary" onclick="addToCartFromModal()">
+                            Savatga qo'shish
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script>
+        // Global variables
+        let cart = [];
+        let products = [];
+        let currentProductId = null;
+        let promoDiscount = 0;
+        let appliedPromoCode = '';
+        
+        // Initialize Swiper
+        const swiper = new Swiper('.swiper', {
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+        
+        // Load products from backend
+        async function loadProducts() {
+            try {
+                // In production, fetch from your API
+                // const response = await fetch('/api/products');
+                // products = await response.json();
+                
+                // Mock data for demo
+                products = [
+                    {
+                        _id: '001',
+                        product_id: '001',
+                        name: 'Elegant Pushti Ko\'ylak',
+                        description: 'Yozgi o\'tkir pushti rangli, ipak matodan tayyorlangan zamonaviy ko\'ylak',
+                        section: 'sale',
+                        price: 150000,
+                        size: 'M, L',
+                        quantity: 5,
+                        available: true,
+                        images: [
+                            'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400',
+                            'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w-400'
+                        ],
+                        created_at: '2023-07-15'
+                    },
+                    {
+                        _id: '002',
+                        product_id: '002',
+                        name: 'Oq To\'y Libosi',
+                        description: 'Maxsus to\'y marosimlari uchun oq rangli, marvarid bezakli libos',
+                        section: 'rental',
+                        rental_price_per_hour: 50000,
+                        size: 'S, M',
+                        quantity: 3,
+                        available: true,
+                        images: [
+                            'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
+                            'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400'
+                        ],
+                        created_at: '2023-07-10'
+                    },
+                    {
+                        _id: '003',
+                        product_id: '003',
+                        name: 'Qizil Kechki Libos',
+                        description: 'Kechki ziyofatlar uchun qizil rangli, ipak matodan tayyorlangan libos',
+                        section: 'sale',
+                        price: 220000,
+                        size: 'L, XL',
+                        quantity: 2,
+                        available: true,
+                        images: [
+                            'https://images.unsplash.com/photo-1585487000160-6eb9ce6b5aae?w=400',
+                            'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=400'
+                        ],
+                        created_at: '2023-07-12'
+                    },
+                    {
+                        _id: '004',
+                        product_id: '004',
+                        name: 'Kunlik Ko\'k Ko\'ylak',
+                        description: 'Kundalik kiyish uchun qulay va zamonaviy dizayndagi ko\'k ko\'ylak',
+                        section: 'sale',
+                        price: 120000,
+                        size: 'S, M, L',
+                        quantity: 8,
+                        available: true,
+                        images: [
+                            'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400',
+                            'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=400'
+                        ],
+                        created_at: '2023-07-18'
+                    },
+                    {
+                        _id: '005',
+                        product_id: '005',
+                        name: 'Yashil Zamonaviy Libos',
+                        description: 'Yashil rangli, zamonaviy dizayndagi maxsus tadbirlar uchun libos',
+                        section: 'rental',
+                        rental_price_per_hour: 40000,
+                        size: 'M, L',
+                        quantity: 4,
+                        available: true,
+                        images: [
+                            'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400',
+                            'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=400'
+                        ],
+                        created_at: '2023-07-14'
+                    }
+                ];
+                
+                renderProducts(products);
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+        
+        // Render products
+        function renderProducts(productsToRender) {
+            const grid = document.getElementById('productsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (productsToRender.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            grid.innerHTML = '';
+            
+            productsToRender.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                // Check if product is in cart
+                const cartItem = cart.find(item => item.product_id === product._id);
+                const inCartQuantity = cartItem ? cartItem.quantity : 0;
+                const available = product.quantity - inCartQuantity;
+                
+                const badgeType = product.section === 'rental' ? 'rental' : 'sale';
+                const badgeText = product.section === 'rental' ? 'Ijara' : 'Sotuv';
+                
+                card.innerHTML = `
+                    ${available <= 0 ? '<div class="product-badge sold-out">Tugagan</div>' : 
+                      `<div class="product-badge ${badgeType}">${badgeText}</div>`}
+                    
+                    <div class="swiper">
+                        <div class="swiper-wrapper">
+                            ${product.images ? product.images.map(img => 
+                                `<div class="swiper-slide">
+                                    <img src="${img}" alt="${product.name}">
+                                </div>`
+                            ).join('') : ''}
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        
+                        <div class="product-meta">
+                            <span class="product-size">${product.size}</span>
+                            <div>
+                                ${product.section === 'sale' ? 
+                                    `<div class="product-price">${product.price.toLocaleString()} so'm</div>` :
+                                    `<div class="product-price">${product.rental_price_per_hour.toLocaleString()} so'm</div>
+                                     <div class="product-price per-hour">soatiga</div>`
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="product-quantity">
+                            <button class="quantity-btn" onclick="decreaseProductQuantity('${product._id}', event)">-</button>
+                            <input type="number" 
+                                   class="quantity-input" 
+                                   id="qty-${product._id}" 
+                                   value="${inCartQuantity || 0}" 
+                                   min="0" 
+                                   max="${available}"
+                                   onchange="updateProductQuantity('${product._id}', this.value)">
+                            <button class="quantity-btn" onclick="increaseProductQuantity('${product._id}', event)">+</button>
+                            <span style="margin-left: auto; font-size: 12px; color: #666;">
+                                ${available} ta qoldi
+                            </span>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <button class="btn btn-primary" onclick="viewProductDetails('${product._id}')">
+                                Batafsil
+                            </button>
+                            <button class="btn btn-secondary" 
+                                    onclick="addToCart('${product._id}')"
+                                    ${available <= 0 ? 'disabled style="opacity: 0.5;"' : ''}>
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+                
+                // Initialize swiper for this card
+                new Swiper(card.querySelector('.swiper'), {
+                    pagination: {
+                        el: card.querySelector('.swiper-pagination'),
+                        clickable: true,
+                    },
+                });
+            });
+        }
+        
+        // Filter products
+        function filterProducts(category) {
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            let filtered = products;
+            
+            switch(category) {
+                case 'sale':
+                    filtered = products.filter(p => p.section === 'sale');
+                    break;
+                case 'rental':
+                    filtered = products.filter(p => p.section === 'rental');
+                    break;
+                case 'new':
+                    // Filter by date (last 7 days)
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    filtered = products.filter(p => new Date(p.created_at) > weekAgo);
+                    break;
+                case 'popular':
+                    // In real app, filter by orders count
+                    filtered = products.slice(0, 3); // Demo
+                    break;
+            }
+            
+            renderProducts(filtered);
+        }
+        
+        // Search products
+        function searchProducts(query) {
+            if (!query.trim()) {
+                renderProducts(products);
+                return;
+            }
+            
+            const filtered = products.filter(product => 
+                product.name.toLowerCase().includes(query.toLowerCase()) ||
+                product.product_id.includes(query) ||
+                product.description.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            renderProducts(filtered);
+        }
+        
+        // Cart functions
+        function addToCart(productId, quantity = 1) {
+            event.stopPropagation();
+            
+            const product = products.find(p => p._id === productId);
+            if (!product) return;
+            
+            // Check availability
+            const cartItem = cart.find(item => item.product_id === productId);
+            const inCartQuantity = cartItem ? cartItem.quantity : 0;
+            const available = product.quantity - inCartQuantity;
+            
+            if (available < quantity) {
+                alert(`Faqat ${available} ta qoldi!`);
+                return;
+            }
+            
+            if (cartItem) {
+                cartItem.quantity += quantity;
+            } else {
+                cart.push({
+                    product_id: productId,
+                    product_name: product.name,
+                    price: product.section === 'sale' ? product.price : product.rental_price_per_hour,
+                    quantity: quantity,
+                    size: product.size,
+                    section: product.section,
+                    images: product.images
+                });
+            }
+            
+            updateCart();
+            updateProductQuantityDisplay(productId);
+        }
+        
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.product_id !== productId);
+            updateCart();
+            updateProductQuantityDisplay(productId);
+        }
+        
+        function updateCart() {
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+            document.getElementById('cartItemCount').textContent = totalItems;
+            
+            // Update cart items display
+            const cartItemsDiv = document.getElementById('cartItems');
+            cartItemsDiv.innerHTML = '';
+            
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <div class="cart-item-img">
+                        <img src="${item.images ? item.images[0] : ''}" alt="${item.product_name}">
+                    </div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.product_name}</div>
+                        <div class="cart-item-meta">
+                            ${item.size} | ${item.section === 'rental' ? 'Ijara' : 'Sotuv'}
+                        </div>
+                        <div class="cart-item-price">
+                            ${item.price.toLocaleString()} so'm x ${item.quantity}
+                        </div>
+                    </div>
+                    <div class="cart-item-remove" onclick="removeFromCart('${item.product_id}')">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                `;
+                cartItemsDiv.appendChild(itemDiv);
+            });
+            
+            const discount = subtotal * (promoDiscount / 100);
+            const total = subtotal - discount;
+            
+            document.getElementById('cartSubtotal').textContent = subtotal.toLocaleString();
+            document.getElementById('cartDiscount').textContent = discount.toLocaleString();
+            document.getElementById('cartTotal').textContent = total.toLocaleString();
+            
+            // Save cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        
+        function updateProductQuantityDisplay(productId) {
+            const product = products.find(p => p._id === productId);
+            const cartItem = cart.find(item => item.product_id === productId);
+            const inCartQuantity = cartItem ? cartItem.quantity : 0;
+            const available = product.quantity - inCartQuantity;
+            
+            const input = document.getElementById(`qty-${productId}`);
+            if (input) {
+                input.value = inCartQuantity;
+                input.max = available;
+                
+                const parent = input.closest('.product-quantity');
+                const span = parent.querySelector('span');
+                if (span) {
+                    span.textContent = `${available} ta qoldi`;
+                }
+            }
+        }
+        
+        function increaseProductQuantity(productId, event) {
+            event.stopPropagation();
+            const input = document.getElementById(`qty-${productId}`);
+            const current = parseInt(input.value) || 0;
+            const max = parseInt(input.max) || 0;
+            
+            if (current < max) {
+                input.value = current + 1;
+                updateProductQuantity(productId, input.value);
+            }
+        }
+        
+        function decreaseProductQuantity(productId, event) {
+            event.stopPropagation();
+            const input = document.getElementById(`qty-${productId}`);
+            const current = parseInt(input.value) || 0;
+            
+            if (current > 0) {
+                input.value = current - 1;
+                updateProductQuantity(productId, input.value);
+            }
+        }
+        
+        function updateProductQuantity(productId, newQuantity) {
+            newQuantity = parseInt(newQuantity) || 0;
+            
+            if (newQuantity === 0) {
+                removeFromCart(productId);
+            } else {
+                const product = products.find(p => p._id === productId);
+                const cartItem = cart.find(item => item.product_id === productId);
+                const inCartQuantity = cartItem ? cartItem.quantity : 0;
+                const available = product.quantity - (inCartQuantity - (cartItem ? cartItem.quantity : 0));
+                
+                if (newQuantity > available) {
+                    alert(`Faqat ${available} ta qoldi!`);
+                    document.getElementById(`qty-${productId}`).value = available;
+                    newQuantity = available;
+                }
+                
+                if (cartItem) {
+                    cartItem.quantity = newQuantity;
+                } else if (newQuantity > 0) {
+                    cart.push({
+                        product_id: productId,
+                        product_name: product.name,
+                        price: product.section === 'sale' ? product.price : product.rental_price_per_hour,
+                        quantity: newQuantity,
+                        size: product.size,
+                        section: product.section,
+                        images: product.images
+                    });
+                }
+                
+                updateCart();
+            }
+        }
+        
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+        
+        // Product details modal
+        function viewProductDetails(productId) {
+            currentProductId = productId;
+            const product = products.find(p => p._id === productId);
+            if (!product) return;
+            
+            const cartItem = cart.find(item => item.product_id === productId);
+            const inCartQuantity = cartItem ? cartItem.quantity : 0;
+            const available = product.quantity - inCartQuantity;
+            
+            document.getElementById('modalProductTitle').textContent = product.name;
+            document.getElementById('modalProductDescription').textContent = product.description;
+            document.getElementById('modalProductSize').textContent = product.size;
+            
+            if (product.section === 'sale') {
+                document.getElementById('modalProductPrice').textContent = 
+                    `${product.price.toLocaleString()} so'm`;
+                document.getElementById('modalRentalPrice').style.display = 'none';
+            } else {
+                document.getElementById('modalProductPrice').textContent = 
+                    `${product.rental_price_per_hour.toLocaleString()} so'm`;
+                document.getElementById('modalRentalPrice').textContent = 'soatiga';
+                document.getElementById('modalRentalPrice').style.display = 'block';
+            }
+            
+            document.getElementById('modalQuantity').value = 1;
+            document.getElementById('modalQuantity').max = available;
+            document.getElementById('modalAvailable').textContent = `${available} ta qoldi`;
+            
+            // Load images
+            const imagesContainer = document.getElementById('productImages');
+            imagesContainer.innerHTML = '';
+            
+            if (product.images) {
+                product.images.forEach(img => {
+                    imagesContainer.innerHTML += `
+                        <div class="swiper-slide">
+                            <img src="${img}" alt="${product.name}">
+                        </div>
+                    `;
+                });
+            }
+            
+            // Initialize swiper
+            if (window.productSwiper) {
+                window.productSwiper.destroy();
+            }
+            
+            window.productSwiper = new Swiper('#productSwiper', {
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+            
+            document.getElementById('productModal').classList.add('active');
+        }
+        
+        function changeQuantity(delta) {
+            const input = document.getElementById('modalQuantity');
+            const current = parseInt(input.value) || 1;
+            const max = parseInt(input.max) || 99;
+            const newValue = Math.max(1, Math.min(max, current + delta));
+            input.value = newValue;
+        }
+        
+        function addToCartFromModal() {
+            const quantity = parseInt(document.getElementById('modalQuantity').value) || 1;
+            addToCart(currentProductId, quantity);
+            document.getElementById('productModal').classList.remove('active');
+        }
+        
+        // Checkout functions
+        function showCheckout() {
+            if (cart.length === 0) {
+                alert('Savat bo\'sh!');
+                return;
+            }
+            
+            document.getElementById('checkoutModal').classList.add('active');
+        }
+        
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+        
+        function applyPromoCode() {
+            const code = document.getElementById('promoCode').value.trim();
+            
+            if (!code) {
+                alert('Promokodni kiriting!');
+                return;
+            }
+            
+            // In real app, check with backend
+            // const response = await fetch(`/api/promo/${code}`);
+            
+            // For demo
+            if (code === 'SUMMER20') {
+                promoDiscount = 20;
+                appliedPromoCode = code;
+                alert('20% chegirma qo\'llandi!');
+                updateCart();
+            } else {
+                alert('Noto\'g\'ri promokod!');
+            }
+        }
+        
+        async function submitOrder(event) {
+            event.preventDefault();
+            
+            if (cart.length === 0) {
+                alert('Savat bo\'sh!');
+                return;
+            }
+            
+            const orderData = {
+                items: cart.map(item => ({
+                    product_id: item.product_id,
+                    quantity: item.quantity
+                })),
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                location: document.getElementById('customerLocation').value,
+                type: document.querySelector('input[name="orderType"]:checked').value,
+                promo_code: appliedPromoCode || null,
+                notes: document.getElementById('orderNotes').value
+            };
+            
+            try {
+                // In production, send to your backend
+                // const response = await fetch('/api/orders', {
+                //     method: 'POST',
+                //     headers: {'Content-Type': 'application/json'},
+                //     body: JSON.stringify(orderData)
+                // });
+                
+                // For Telegram Web App
+                if (window.Telegram && Telegram.WebApp) {
+                    Telegram.WebApp.sendData(JSON.stringify(orderData));
+                    
+                    // Clear cart
+                    cart = [];
+                    updateCart();
+                    closeCheckout();
+                    toggleCart();
+                    
+                    alert('Buyurtmangiz qabul qilindi! Admin tez orada siz bilan bog\'lanadi.');
+                } else {
+                    // For browser testing
+                    console.log('Order data:', orderData);
+                    alert('Buyurtma demo rejimda saqlandi. Aslida Telegram Web App ishlatiladi.');
+                    
+                    // Clear cart
+                    cart = [];
+                    updateCart();
+                    closeCheckout();
+                    toggleCart();
+                }
+                
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                alert('Xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.');
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load cart from localStorage
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCart();
+            }
+            
+            loadProducts();
+            
+            // Close modals on outside click
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Close modals on ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        modal.classList.remove('active');
+                    });
+                    document.getElementById('cartSidebar').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
